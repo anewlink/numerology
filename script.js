@@ -61,32 +61,65 @@ const api = (function() {
   }
 
   const form = document.querySelector(`.main-form`);
-  const date = document.querySelector(`[name="date"]`);
-
+  const date = document.querySelector(`.dob`);
   const lifePath = document.querySelector(`.life-path`);
   const soulUrge = document.querySelector(`.soul-urge`);
   const destiny = document.querySelector(`.destiny`);
   const personality = document.querySelector(`.personality`);
 
+  const nameError = document.querySelector(`.name-error`);
+  const dateError = document.querySelector(`.dob-error`);
+
+  const numbers = { lifePath, soulUrge, destiny, personality };
+  const calculations = {
+    lifePath: calculateLifePath,
+    soulUrge: calculateSoulUrge,
+    destiny: calculateDestiny,
+    personality: calculatePersonality
+  };
+
+  const results = Array.from(document.querySelector(".results").children);
+
   function doCalculations(e) {
     e.preventDefault();
-
     const name = this.querySelector(`[name="name"]`).value;
-    soulUrge.innerHTML = name
-      ? `Your Soul Urge number is ${calculateSoulUrge(name)}`
-      : "";
 
-    lifePath.innerHTML = date.value
-      ? `Your Life Path number is ${calculateLifePath(date.value)}`
-      : "";
+    if (!validateInput(name)) return;
 
-    destiny.innerHTML = name
-      ? `Your Destiny number is ${calculateDestiny(name)}`
-      : "";
+    Object.keys(numbers).forEach(number => {
+      numbers[number].innerHTML = "";
+      numbers[number].classList.remove("show");
+    });
 
-    personality.innerHTML = name
-      ? `Your Personality number is ${calculatePersonality(name)}`
-      : "";
+    console.log(name);
+    const delayDuration = 500;
+
+    if (!date.value) {
+      lifePath.style["position"] = "absolute";
+    } else {
+      lifePath.style["position"] = "static";
+    }
+
+    results.forEach((result, index) => {
+      const number = convertToCamelCase(result.className);
+      setTimeout(() => {
+        if (number !== "lifePath" || (number === "lifePath" && date.value)) {
+          const text = result.className.split("-");
+          console.log(text);
+
+          numbers[number].classList.add("show");
+
+          numbers[number].innerHTML = `Your ${text[0].charAt(0).toUpperCase() +
+            text[0].slice(1)}${
+            text[1]
+              ? " " + text[1].charAt(0).toUpperCase() + text[1].slice(1)
+              : ""
+          } number is ${calculations[number](
+            number !== "lifePath" ? name : date.value
+          )}`;
+        }
+      }, delayDuration * index);
+    });
   }
 
   function dateBlur(e) {
@@ -95,6 +128,39 @@ const api = (function() {
 
   function dateFocus(e) {
     this.type = "date";
+  }
+
+  function convertToCamelCase(str) {
+    const words = str.split("-");
+
+    return words.reduce((fullString, currentWord, index) => {
+      if (index > 0) {
+        return (
+          fullString +
+          currentWord.charAt(0).toUpperCase() +
+          currentWord.slice(1)
+        );
+      }
+      return currentWord;
+    }, "");
+  }
+
+  function validateInput(name) {
+    nameError.innerHTML = "";
+    dateError.innerHTML = "";
+    let isValid = true;
+
+    if (!name) {
+      nameError.innerHTML = "Please enter your name";
+      isValid = false;
+    }
+
+    if (!date.value) {
+      dateError.innerHTML = "Please enter birth date";
+      isValid = false;
+    }
+
+    return isValid;
   }
 
   form.addEventListener("submit", doCalculations);

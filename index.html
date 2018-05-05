@@ -10,17 +10,23 @@
 </head>
 
 <body>
-  <form class="main-form">
-    <h1>Numerology</h1>
-    <input name="name" type="text" placeholder="Enter your full name">
-    <input type="text" name="date" placeholder="Enter your date of birth">
-    <button type="submit">Submit</button>
-  </form>
+  <div class="wrapper">
+    <form class="main-form">
+      <h1>Numerology</h1>
+      <input name="name" type="text" placeholder="Enter your full name">
+      <div class="name-error"></div>
+      <input class="dob" type="text" placeholder="Enter your date of birth">
+      <div class="dob-error"></div>
+      <button type="submit">Submit</button>
+    </form>
 
-  <div class="life-path"></div>
-  <div class="soul-urge"></div>
-  <div class="destiny"></div>
-  <div class="personality"></div>
+    <ul class="results">
+      <li class="life-path"></li>
+      <li class="soul-urge"></li>
+      <li class="destiny"></li>
+      <li class="personality"></li>
+    </ul>
+  </div>
 </body>
 <script src="script.js"></script>
 
