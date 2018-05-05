@@ -1,0 +1,29 @@
+* {
+  box-sizing: border-box;
+}
+
+.main-form {
+  text-align: center;
+  display: block;
+}
+
+.main-form input {
+  display: inherit;
+  margin-left: 37.5%;
+  padding: 5px;
+  width: 25%;
+}
+
+.main-form button {
+  display: inherit;
+  width: 5%;
+  margin-left: 57.5%;
+  margin-top: 5px;
+}
+
+.main-form label {
+  display: inherit;
+  margin-left: 25%;
+  margin-top: 5px;
+  text-align: left;
+}
