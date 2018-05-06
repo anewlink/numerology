@@ -91,7 +91,6 @@ const api = (function() {
       numbers[number].classList.remove("show");
     });
 
-    console.log(name);
     const delayDuration = 500;
 
     if (!date.value) {
@@ -120,6 +119,8 @@ const api = (function() {
         }
       }, delayDuration * index);
     });
+
+    smoothScroll();
   }
 
   function dateBlur(e) {
@@ -152,15 +153,27 @@ const api = (function() {
 
     if (!name) {
       nameError.innerHTML = "Please enter your name";
+      nameError.classList.add("error-show");
       isValid = false;
     }
 
     if (!date.value) {
       dateError.innerHTML = "Please enter birth date";
+      dateError.classList.add("error-show");
       isValid = false;
     }
 
     return isValid;
+  }
+
+  function smoothScroll() {
+    const r = document.querySelector(".results");
+    r.style["display"] = "flex";
+
+    window.scrollBy({
+      top: window.innerHeight,
+      behavior: "smooth"
+    });
   }
 
   form.addEventListener("submit", doCalculations);
