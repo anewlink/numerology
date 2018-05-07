@@ -26,7 +26,7 @@
   }
 
   function calculateDestiny(fullName) {
-    const names = fullName.split(" ");
+    const names = fullName.toLowerCase().split(" ");
 
     let result = names.reduce((total, name) => {
       let sum = 0;
@@ -123,7 +123,7 @@
               ? " " + text[1].charAt(0).toUpperCase() + text[1].slice(1)
               : ""
           } number is ${calculations[number](
-            number !== "lifePath" ? name : date.value
+            number !== "lifePath" ? name.toLowerCase() : date.value
           )}`;
         }
       }, delayDuration * index);
