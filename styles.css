@@ -29,7 +29,6 @@ h1 {
   justify-content: center;
   align-items: center;
   text-align: center;
-  /* border: 1px solid red; */
   width: 70%;
   height: 100vh;
 }
@@ -39,7 +38,7 @@ h1 {
   padding: 50px;
   border: none;
   background: mistyrose;
-
+  text-transform: uppercase;
   min-height: 115px;
   font-size: 1.5em;
 }
@@ -51,6 +50,7 @@ h1 {
   padding: 10px;
   height: 90px;
   font-size: 1.8em;
+  background: white;
 }
 
 .main-form button:hover {
@@ -63,16 +63,13 @@ h1 {
   color: rgba(255, 0, 0, 0);
   font-size: 2em;
   height: 50px;
-  transition: all 2s;
-  transform: scale(0.8);
+  transition: transform 0.4s;
   transform: translateX(-20px);
 }
 
 .error-show {
   align-self: center;
   color: rgba(255, 0, 0, 1);
-  transition: all 0.5s ease-out;
-  transform: scale(1.01);
   transform: translateX(20px);
 }
 
@@ -103,4 +100,43 @@ li.show {
   border-bottom: 3px dashed rgba(0, 0, 0, 1);
   transition: all 1s;
   color: black;
+}
+
+@media all and (max-width: 750px) {
+  .main-form input {
+    font-size: 1.2em;
+  }
+
+  .main-form button {
+    font-size: 1.5em;
+  }
+}
+
+@media all and (max-width: 640px) {
+  .main-form input {
+    font-size: 0.55em;
+  }
+
+  .main-form button {
+    font-size: 1.2em;
+    width: 100%;
+  }
+
+  .error {
+    font-size: 1.4em;
+    height: 30px;
+  }
+}
+
+@media all and (max-width: 640px) and (orientation: landscape) {
+  .main-form input {
+    min-height: 10px;
+    padding: 25px;
+  }
+
+  .main-form button {
+    height: 50px;
+    padding: 5px;
+    width: 30%;
+  }
 }
