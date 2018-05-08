@@ -14,6 +14,24 @@ h1 {
   font-size: 2em;
 }
 
+a {
+  color: black;
+  border: 3px solid rgba(255, 165, 0, 0);
+  padding: 0 5px;
+  text-decoration: none;
+  transition: border 0.5s;
+}
+
+a.highlight {
+  border: 3px solid rgba(255, 165, 0, 1);
+  transition: border 0.5s;
+}
+
+a:hover {
+  background: orange;
+  transition: all 0.3s;
+}
+
 .wrapper {
   display: flex;
   flex-direction: column;
@@ -30,7 +48,7 @@ h1 {
   align-items: center;
   text-align: center;
   width: 70%;
-  height: 100vh;
+  height: 95vh;
 }
 
 .main-form input {
@@ -73,18 +91,19 @@ h1 {
   transform: translateX(20px);
 }
 
-.results {
+.numberTypes {
   display: none;
   flex-direction: column;
   list-style-type: none;
   width: 100%;
   padding-left: 0;
-  min-height: 100vh;
+  min-height: 95vh;
   justify-content: center;
   background: mistyrose;
+  margin-top: 0;
 }
 
-.results li {
+.numberTypes li {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -100,6 +119,10 @@ li.show {
   border-bottom: 3px dashed rgba(0, 0, 0, 1);
   transition: all 1s;
   color: black;
+}
+
+.signature {
+  height: 5vh;
 }
 
 @media all and (max-width: 750px) {
@@ -125,6 +148,15 @@ li.show {
   .error {
     font-size: 1.4em;
     height: 30px;
+  }
+
+  .numberTypes li {
+    font-size: 1.4em;
+    width: 90%;
+  }
+
+  li.show {
+    width: 100%;
   }
 }
 

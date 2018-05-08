@@ -1,25 +1,32 @@
 (function() {
   const charToVal = {};
 
-  const form = document.querySelector(`.main-form`);
-  const date = document.querySelector(`.dob`);
-  const lifePath = document.querySelector(`.life-path`);
-  const soulUrge = document.querySelector(`.soul-urge`);
-  const destiny = document.querySelector(`.destiny`);
-  const personality = document.querySelector(`.personality`);
+  const form = document.querySelector(".main-form");
+  const date = document.querySelector(".dob");
+  const lifePath = document.querySelector(".life-path");
+  const soulUrge = document.querySelector(".soul-urge");
+  const destiny = document.querySelector(".destiny");
+  const personality = document.querySelector(".personality");
 
-  const nameError = document.querySelector(`.name-error`);
-  const dateError = document.querySelector(`.dob-error`);
+  const nameError = document.querySelector(".name-error");
+  const dateError = document.querySelector(".dob-error");
 
-  const numbers = { lifePath, soulUrge, destiny, personality };
-  const calculations = {
+  const numberTypes = document.querySelectorAll(".numberTypes li");
+  const numberTypesMap = { lifePath, soulUrge, destiny, personality };
+  const numberTypeCalculators = {
     lifePath: calculateLifePath,
     soulUrge: calculateSoulUrge,
     destiny: calculateDestiny,
     personality: calculatePersonality
   };
 
-  const results = Array.from(document.querySelector(".results").children);
+  const numberTypeLinks = {
+    lifePath: "http://astrology-numerology.com/num-lifepath.html",
+    soulUrge: "http://astrology-numerology.com/num-birthname.html#soul_urge",
+    destiny: "http://astrology-numerology.com/num-birthname.html#destiny",
+    personality:
+      "http://astrology-numerology.com/num-birthname.html#inner_dreams"
+  };
 
   for (let i = 0; i < 26; i++) {
     charToVal[String.fromCharCode("a".charCodeAt(0) + i)] = i % 9 + 1;
@@ -96,36 +103,31 @@
 
     if (!validateInput(name)) return;
 
-    Object.keys(numbers).forEach(number => {
-      numbers[number].innerHTML = "";
-      numbers[number].classList.remove("show");
+    Object.keys(numberTypesMap).forEach(numberType => {
+      numberTypesMap[numberType].innerHTML = "";
+      numberTypesMap[numberType].classList.remove("show");
     });
 
     const delayDuration = 500;
 
-    if (!date.value) {
-      lifePath.style["position"] = "absolute";
-    } else {
-      lifePath.style["position"] = "static";
-    }
+    numberTypes.forEach((numberType, index) => {
+      const numberTypeName = convertClassNameToCamelCase(numberType.className);
+      const numberTypeFunc = numberTypeCalculators[numberTypeName];
+      const funcArg =
+        numberTypeName !== "lifePath" ? name.toLowerCase() : date.value;
+      const resultText = numberType.className.split("-");
 
-    results.forEach((result, index) => {
-      const number = convertToCamelCase(result.className);
       setTimeout(() => {
-        if (number !== "lifePath" || (number === "lifePath" && date.value)) {
-          const text = result.className.split("-");
+        numberTypesMap[numberTypeName].classList.add("show");
+        numberTypesMap[numberTypeName].innerHTML = `Your ${upperCaseFirstLetter(
+          resultText
+        )} number is&nbsp;<a id=${index + 1} href="${
+          numberTypeLinks[numberTypeName]
+        }" target="_blank" >${numberTypeFunc(funcArg)}</a>`;
 
-          numbers[number].classList.add("show");
-
-          numbers[number].innerHTML = `Your ${text[0].charAt(0).toUpperCase() +
-            text[0].slice(1)}${
-            text[1]
-              ? " " + text[1].charAt(0).toUpperCase() + text[1].slice(1)
-              : ""
-          } number is ${calculations[number](
-            number !== "lifePath" ? name.toLowerCase() : date.value
-          )}`;
-        }
+        setTimeout(() => {
+          document.getElementById(index + 1).classList.add("highlight");
+        }, delayDuration + 250);
       }, delayDuration * index);
     });
 
@@ -140,7 +142,7 @@
     this.type = "date";
   }
 
-  function convertToCamelCase(str) {
+  function convertClassNameToCamelCase(str) {
     const words = str.split("-");
 
     return words.reduce((fullString, currentWord, index) => {
@@ -155,6 +157,15 @@
     }, "");
   }
 
+  function upperCaseFirstLetter(str) {
+    let text = `${str[0].charAt(0).toUpperCase() + str[0].slice(1)}`;
+
+    if (str[1]) {
+      text += " " + str[1].charAt(0).toUpperCase() + str[1].slice(1);
+    }
+    return text;
+  }
+
   function validateInput(fullname) {
     nameError.innerHTML = "";
     dateError.innerHTML = "";
@@ -166,7 +177,7 @@
     });
 
     if (!fullname) {
-      nameError.innerHTML = "Please enter your name";
+      nameError.innerHTML = "Please enter a name";
       nameError.classList.add("error-show");
       isValid = false;
     } else if (!areNamesValid) {
@@ -176,7 +187,7 @@
     }
 
     if (!date.value) {
-      dateError.innerHTML = "Please enter birth date";
+      dateError.innerHTML = "Please enter a birth date";
       dateError.classList.add("error-show");
       isValid = false;
       return isValid;
@@ -200,8 +211,8 @@
   }
 
   function scrollToResults() {
-    const resultsEl = document.querySelector(".results");
-    resultsEl.style["display"] = "flex";
+    const numberTypesEl = document.querySelector(".numberTypes");
+    numberTypesEl.style["display"] = "flex";
 
     window.scrollBy({
       top: window.innerHeight,
