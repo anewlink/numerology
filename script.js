@@ -1,8 +1,9 @@
 (function() {
   const charToVal = {};
-
+  const name = document.querySelector(`[name="name"]`);
   const form = document.querySelector(".main-form");
   const date = document.querySelector(".dob");
+  const save = document.querySelector("#save");
   const lifePath = document.querySelector(".life-path");
   const soulUrge = document.querySelector(".soul-urge");
   const destiny = document.querySelector(".destiny");
@@ -30,6 +31,16 @@
 
   for (let i = 0; i < 26; i++) {
     charToVal[String.fromCharCode("a".charCodeAt(0) + i)] = i % 9 + 1;
+  }
+
+  if (localStorage.getItem("name")) {
+    name.value = localStorage.getItem("name");
+    save.checked = true;
+  }
+
+  if (localStorage.getItem("birthDate")) {
+    date.value = localStorage.getItem("birthDate");
+    save.checked = true;
   }
 
   function calculateDestiny(fullName) {
@@ -99,9 +110,17 @@
 
   function doCalculations(e) {
     e.preventDefault();
-    const name = this.querySelector(`[name="name"]`).value;
 
-    if (!validateInput(name)) return;
+    const nameValue = name.value;
+
+    if (!validateInput(nameValue)) return;
+
+    if (save.checked) {
+      localStorage.setItem("name", nameValue.trim());
+      localStorage.setItem("birthDate", date.value);
+    } else {
+      localStorage.clear();
+    }
 
     Object.keys(numberTypesMap).forEach(numberType => {
       numberTypesMap[numberType].innerHTML = "";
@@ -114,7 +133,7 @@
       const numberTypeName = convertClassNameToCamelCase(numberType.className);
       const numberTypeFunc = numberTypeCalculators[numberTypeName];
       const funcArg =
-        numberTypeName !== "lifePath" ? name.toLowerCase() : date.value;
+        numberTypeName !== "lifePath" ? nameValue.toLowerCase() : date.value;
       const resultText = numberType.className.split("-");
 
       setTimeout(() => {
